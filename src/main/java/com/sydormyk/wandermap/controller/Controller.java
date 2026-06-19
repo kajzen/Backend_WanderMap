@@ -1,8 +1,11 @@
 package com.sydormyk.wandermap.controller;
 
+import com.sydormyk.wandermap.dto.RegisterRequest;
 import com.sydormyk.wandermap.model.City;
 import com.sydormyk.wandermap.model.Country;
 import com.sydormyk.wandermap.model.Place;
+import com.sydormyk.wandermap.model.User;
+import com.sydormyk.wandermap.service.AuthService;
 import com.sydormyk.wandermap.service.CityService;
 import com.sydormyk.wandermap.service.CountryService;
 import com.sydormyk.wandermap.service.PlaceService;
@@ -15,11 +18,13 @@ public class Controller {
     private final CountryService countryService;
     private final CityService cityService;
     private final PlaceService placeService;
+    private final AuthService authService;
 
-    public Controller(CountryService countryService, CityService cityService, PlaceService placeService) {
+    public Controller(CountryService countryService, CityService cityService, PlaceService placeService, AuthService authService) {
         this.countryService = countryService;
         this.cityService = cityService;
         this.placeService = placeService;
+        this.authService = authService;
     }
 
     @GetMapping("/api/hello")
@@ -58,6 +63,18 @@ public class Controller {
     public Place postPlaces(@PathVariable Long cityId, @RequestBody Place place){
         return placeService.saveToCity(cityId, place);
     }
+
+    @PostMapping("/api/auth/login")
+    public User login(@RequestBody RegisterRequest  request){
+        return authService.login(request.getEmail(), request.getPassword());
+    }
+
+    @PostMapping("/api/auth/register")
+    public User registerUser(@RequestBody RegisterRequest  request){
+        return authService.register(request.getEmail(), request.getPassword());
+    }
+
+
 
 
 
