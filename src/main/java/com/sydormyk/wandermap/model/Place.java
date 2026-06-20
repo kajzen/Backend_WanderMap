@@ -12,6 +12,18 @@ public class Place {
     private Double latitude;
     private Double longitude;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Double getLatitude() {
         return latitude;
     }
