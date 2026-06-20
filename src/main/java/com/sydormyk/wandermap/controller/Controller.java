@@ -65,7 +65,7 @@ public class Controller {
     }
 
     @PostMapping("/api/auth/login")
-    public User login(@RequestBody RegisterRequest  request){
+    public String login(@RequestBody RegisterRequest  request){
         return authService.login(request.getEmail(), request.getPassword());
     }
 

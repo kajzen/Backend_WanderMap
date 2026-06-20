@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public User register(String email, String password){
@@ -27,7 +29,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public User login(String email, String password){
+    public String login(String email, String password){
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -35,7 +37,7 @@ public class AuthService {
             throw new RuntimeException("Wrong password");
         }
 
-        return user;
+        return jwtService.generateToken(user.getEmail());
 
     }
 }
